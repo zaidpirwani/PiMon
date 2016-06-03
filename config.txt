@@ -1,0 +1,7 @@
+#Lines to be ADDED to /boot/config.txt
+dtparam=spi=on
+dtparam=i2c_arm=on
+dtoverlay=w1-gpio
+dtoverlay=gpio-ir,gpio_pin=20
+dtoverlay=i2c-rtc,ds1307
+dtoverlay=dht11,gpiopin=17
