@@ -1,5 +1,10 @@
 #!/usr/bin/python3
 
+#import sys
+#print(sys.path)
+#import lcd
+#lcd.lcdInit()
+
 import atexit
 def exit_handler():
 	print('EXITING')
