@@ -95,8 +95,8 @@ class lcdThreadClass(threading.Thread):
 			lcd.Print(x,y*0, ssid)
 			lcd.Print(x,y*1, IP)
 			lcd.Print(x,y*2, dt.datetime.now().strftime('%d/%m')+' - '+dt.datetime.now().strftime('%H:%M'))
-			lcd.Print(x,y*3, 'T1=' + "{:.1f}".format(temperature) + ' - T2=' + "{:.1f}".format(temperature2))
-			lcd.Print(x,y*4, 'H1=' + "{:.1f}".format(humidity))
+			lcd.Print(x,y*3, ' T1=' + "{:.0f}".format(temperature) + '/H1=' + "{:.0f}".format(humidity))
+			lcd.Print(x,y*4, ' T2=' + "{:.1f}".format(temperature2))
 lcdThread = lcdThreadClass(15)
 lcdThread.start()
 
