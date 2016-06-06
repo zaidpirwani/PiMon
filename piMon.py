@@ -88,15 +88,18 @@ class lcdThreadClass(threading.Thread):
 		self.delay = delay
 	def run(self):
 		while True:
-			time.sleep(self.delay)
-			x=0
-			y=8
-			lcd.Init()
-			lcd.Print(x,y*0, ssid)
-			lcd.Print(x,y*1, IP)
-			lcd.Print(x,y*2, dt.datetime.now().strftime('%d/%m')+' - '+dt.datetime.now().strftime('%H:%M'))
-			lcd.Print(x,y*3, ' T1=' + "{:.0f}".format(temperature) + '/H1=' + "{:.0f}".format(humidity))
-			lcd.Print(x,y*4, ' T2=' + "{:.1f}".format(temperature2))
+			try:
+				time.sleep(self.delay)
+				x=0
+				y=8
+				lcd.Init()
+				lcd.Print(x,y*0, ssid)
+				lcd.Print(x,y*1, IP)
+				lcd.Print(x,y*2, dt.datetime.now().strftime('%d/%m')+' - '+dt.datetime.now().strftime('%H:%M'))
+				lcd.Print(x,y*3, ' T1=' + "{:.0f}".format(temperature) + '/H1=' + "{:.0f}".format(humidity))
+				lcd.Print(x,y*4, ' T2=' + "{:.1f}".format(temperature2))
+			except:
+				pass
 lcdThread = lcdThreadClass(15)
 lcdThread.start()
 
