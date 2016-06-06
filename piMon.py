@@ -9,6 +9,10 @@ import subprocess
 p = subprocess.Popen(['hostname', '-I'], stdout=subprocess.PIPE,stderr=subprocess.PIPE)
 IP, err = p.communicate()
 
+from wireless import Wireless
+wireless = Wireless()
+ssid = wireless.current()
+
 import atexit
 def exit_handler():
 	print('EXITING')
@@ -48,8 +52,9 @@ import lcd
 x=0
 y=8
 lcd.Init()
-lcd.Print(x,y*0, IP)
-lcd.Print(x,y*1, dt.datetime.now().strftime('%m/%y')+'   '+dt.datetime.now().strftime('%H:%M'))
+lcd.Print(x,y*0, ssid)
+lcd.Print(x,y*1, IP)
+lcd.Print(x,y*2, dt.datetime.now().strftime('%d/%m'))
 
 while True:
 	time.sleep(10)
