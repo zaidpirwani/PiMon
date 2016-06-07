@@ -15,6 +15,7 @@ atexit.register(exit_handler)
 import time
 import datetime as dt
 
+import os
 import RPi.GPIO as GPIO
 GPIO.setmode(GPIO.BCM)
 # Wanted to use BOARD pin numbering for GPIO instead of BCM
@@ -32,6 +33,13 @@ def btnPressed(btn):
 	GPIO.output(buzzer,0)
 	GPIO.output(led,0)
 	print('Button press detected on channel %s'%btn)
+	if btn==19:
+		time.sleep(2)
+		if GPIO.input(19)==False:
+			lcd.Init()
+			lcd.Print(0,10, 'SHUTTING DOWN.')
+			time.sleep(3)
+			os.system("sudo shutdown -h now")
 
 btns = [26,19,13,6]
 # Button Numbering= UP, DOWN, LEFT, RIGHT, ENTER
