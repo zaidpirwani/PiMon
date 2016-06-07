@@ -5,22 +5,14 @@
 #print(sys.path)
 #to check the path was correct
 
-import subprocess
-p = subprocess.Popen(['hostname', '-I'], stdout=subprocess.PIPE,stderr=subprocess.PIPE)
-IP, err = p.communicate()
-
-from wireless import Wireless
-wireless = Wireless()
-ssid = wireless.current()
-
 import atexit
 def exit_handler():
 	print('EXITING')
 	GPIO.cleanup()
 atexit.register(exit_handler)
 
-import time
 #for time.sleep()
+import time
 import datetime as dt
 
 import RPi.GPIO as GPIO
@@ -81,6 +73,18 @@ class ds18b20ThreadClass(threading.Thread):
 ds18b20Thread = ds18b20ThreadClass(15)
 ds18b20Thread.start()
 
+
+import subprocess
+from wireless import Wireless
+def getNetworkInfo():
+	global IP, ssid
+	wireless = Wireless()
+	ssid = wireless.current()
+	p = subprocess.Popen(['hostname', '-I'], stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+	IP, err = p.communicate()
+
+
+
 import lcd
 class lcdThreadClass(threading.Thread):
 	def __init__(self, delay):
@@ -92,6 +96,7 @@ class lcdThreadClass(threading.Thread):
 				time.sleep(self.delay)
 				x=0
 				y=8
+				getNetworkInfo()
 				lcd.Init()
 				lcd.Print(x,y*0, ssid)
 				lcd.Print(x,y*1, IP)
