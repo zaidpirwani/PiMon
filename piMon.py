@@ -15,6 +15,7 @@ atexit.register(exit_handler)
 import time
 import datetime as dt
 
+
 import os
 import RPi.GPIO as GPIO
 GPIO.setmode(GPIO.BCM)
@@ -46,6 +47,7 @@ btns = [26,19,13,6]
 for btn in btns:
 	GPIO.setup(btn, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 	GPIO.add_event_detect(btn,GPIO.FALLING,callback=btnPressed,bouncetime=250)
+
 
 import threading
 
@@ -92,7 +94,6 @@ def getNetworkInfo():
 	IP, err = p.communicate()
 
 
-
 import lcd
 class lcdThreadClass(threading.Thread):
 	def __init__(self, delay):
@@ -115,6 +116,29 @@ class lcdThreadClass(threading.Thread):
 				pass
 lcdThread = lcdThreadClass(15)
 lcdThread.start()
+
+#from time import localtime, strftime
+#import time as time
+
+import thingspeak
+import thingspeakChannelKey
+class thingSpeakThreadClass(threading.Thread):
+	def __init__(self, delay):
+		threading.Thread.__init__(self)
+		self.delay = delay
+	def run(self):
+		while True:
+			time.sleep(self.delay)
+			channel_id = 122289
+			write_key  = thingspeakChannelKey.getKey()
+			channel = thingspeak.Channel(id=channel_id,write_key=write_key)
+			try:
+				response = channel.update({1:temperature2, 2:temperature, 3:humidity})
+				#print response
+			except:
+				print "connection failed"
+thingSpeakThread = thingSpeakThreadClass(30)
+thingSpeakThread.start()
 
 while True:
 	time.sleep(15)
